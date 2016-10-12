@@ -30,15 +30,29 @@ class CapturePhotoCommand extends Command
      */
     public function handle()
     {
+      
+      $tz_object = new DateTimeZone(env('TIMEZONE'));
+
+      $datetime = new DateTime();
+      $datetime->setTimezone($tz_object);
+      $dateString = $datetime->format("Y-m-d-H-i-s");
+      
       $workingPath = env('PHOTO_PATH');
-      $filename = date("Y-m-d-H-i-s") . '.jpg';
+      
+      $filename = $dateString . '.jpg';
+      
       $filePath = $workingPath . $filename;
+      
       $nowFilePath = $workingPath . 'now.jpg';
+      
       sh::raspistill('-o', $filePath, '-roi', '0.3,0.35,0.4,0.4');
+      
       try{
         sh::rm($nowFilePath);
       } catch( \Exception $e ) {}
+        
       sh::ln('-s', $filePath, $nowFilePath);
+      
       $this->info('photo captured');
     }
 }
