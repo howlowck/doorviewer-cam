@@ -31,9 +31,9 @@ class CapturePhotoCommand extends Command
     public function handle()
     {
       
-      $tz_object = new DateTimeZone(env('TIMEZONE'));
+      $tz_object = new \DateTimeZone(env('TIMEZONE'));
 
-      $datetime = new DateTime();
+      $datetime = new \DateTime();
       $datetime->setTimezone($tz_object);
       $dateString = $datetime->format("Y-m-d-H-i-s");
       
